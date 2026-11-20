@@ -1,0 +1,41 @@
+import { LovelaceBadgeConfig } from "../../ha";
+import { ActionsSharedConfig } from "../../shared/config/actions-config";
+export type TemplateBadgeConfig = LovelaceBadgeConfig & ActionsSharedConfig & {
+    entity?: string;
+    area?: string;
+    icon?: string;
+    color?: string;
+    label?: string;
+    content?: string;
+    picture?: string;
+    entity_id?: string | string[];
+};
+export declare const templateBadgeConfigStruct: import("superstruct").Struct<{
+    entity: string;
+    area: string;
+    type: string;
+    icon: string;
+    entity_id: string | string[];
+    label: string;
+    picture: string;
+    color: string;
+    content: string;
+    hold_action?: any;
+    tap_action?: any;
+    double_tap_action?: any;
+    visibility?: any;
+}, {
+    entity: import("superstruct").Struct<string, null>;
+    area: import("superstruct").Struct<string, null>;
+    icon: import("superstruct").Struct<string, null>;
+    color: import("superstruct").Struct<string, null>;
+    label: import("superstruct").Struct<string, null>;
+    content: import("superstruct").Struct<string, null>;
+    picture: import("superstruct").Struct<string, null>;
+    entity_id: import("superstruct").Struct<string | string[], null>;
+    hold_action: import("superstruct").Struct<any, null>;
+    tap_action: import("superstruct").Struct<any, null>;
+    double_tap_action: import("superstruct").Struct<any, null>;
+    type: import("superstruct").Struct<string, null>;
+    visibility: import("superstruct").Struct<any, null>;
+}>;

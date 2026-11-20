@@ -1,0 +1,30 @@
+import { HassEntity } from "home-assistant-js-websocket";
+import { nothing, TemplateResult } from "lit";
+import { HomeAssistant, LovelaceGridOptions, LovelaceLayoutOptions } from "../ha";
+import "../shared/badge-icon";
+import "../shared/card";
+import { Appearance, AppearanceSharedConfig } from "../shared/config/appearance-config";
+import { EntitySharedConfig } from "../shared/config/entity-config";
+import "../shared/shape-avatar";
+import "../shared/shape-icon";
+import "../shared/state-info";
+import "../shared/state-item";
+import { MushroomBaseElement } from "./base-element";
+type BaseConfig = EntitySharedConfig & AppearanceSharedConfig;
+export declare function computeDarkMode(hass?: HomeAssistant): boolean;
+export declare class MushroomBaseCard<T extends BaseConfig = BaseConfig, E extends HassEntity = HassEntity> extends MushroomBaseElement {
+    protected _config?: T;
+    layout: string | undefined;
+    protected get _stateObj(): E | undefined;
+    protected get hasControls(): boolean;
+    setConfig(config: T): void;
+    getCardSize(): number | Promise<number>;
+    getLayoutOptions(): LovelaceLayoutOptions;
+    getGridOptions(): LovelaceGridOptions;
+    protected renderPicture(picture: string): TemplateResult;
+    protected renderNotFound(config: BaseConfig): TemplateResult;
+    protected renderIcon(stateObj: HassEntity, icon?: string): TemplateResult;
+    protected renderBadge(stateObj: HassEntity): TemplateResult<1> | typeof nothing;
+    protected renderStateInfo(stateObj: HassEntity, appearance: Appearance, name: string, state?: string): TemplateResult | null;
+}
+export {};

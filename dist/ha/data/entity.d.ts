@@ -1,0 +1,10 @@
+import { HassEntity } from "home-assistant-js-websocket";
+export declare const UNAVAILABLE = "unavailable";
+export declare const UNKNOWN = "unknown";
+export declare const ON = "on";
+export declare const OFF = "off";
+export declare function isActive(stateObj: HassEntity): boolean;
+export declare function isAvailable(stateObj: HassEntity): boolean;
+export declare function isOff(stateObj: HassEntity): boolean;
+export declare function isUnknown(stateObj: HassEntity): boolean;
+export declare function getEntityPicture(stateObj: HassEntity): string;

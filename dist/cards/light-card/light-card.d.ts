@@ -1,0 +1,34 @@
+import { CSSResultGroup, nothing, PropertyValues, TemplateResult } from "lit";
+import { HomeAssistant, LightEntity, LovelaceCard, LovelaceCardEditor } from "../../ha";
+import "../../shared/badge-icon";
+import "../../shared/button";
+import "../../shared/card";
+import "../../shared/shape-avatar";
+import "../../shared/shape-icon";
+import "../../shared/state-info";
+import "../../shared/state-item";
+import { MushroomBaseCard } from "../../utils/base-card";
+import "./controls/light-brightness-control";
+import "./controls/light-color-control";
+import "./controls/light-color-temp-control";
+import { LightCardConfig } from "./light-card-config";
+export declare class LightCard extends MushroomBaseCard<LightCardConfig, LightEntity> implements LovelaceCard {
+    static getConfigElement(): Promise<LovelaceCardEditor>;
+    static getStubConfig(hass: HomeAssistant): Promise<LightCardConfig>;
+    private _activeControl?;
+    private brightness?;
+    private get _controls();
+    protected get hasControls(): boolean;
+    setConfig(config: LightCardConfig): void;
+    _onControlTap(ctrl: any, e: any): void;
+    protected updated(changedProperties: PropertyValues): void;
+    updateBrightness(): void;
+    private onCurrentBrightnessChange;
+    updateActiveControl(): void;
+    private _handleAction;
+    protected render(): TemplateResult | typeof nothing;
+    protected renderIcon(stateObj: LightEntity, icon?: string): TemplateResult;
+    private renderOtherControls;
+    private renderActiveControl;
+    static get styles(): CSSResultGroup;
+}

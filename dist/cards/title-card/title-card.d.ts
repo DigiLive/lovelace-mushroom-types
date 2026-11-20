@@ -1,0 +1,35 @@
+import { CSSResultGroup, nothing, PropertyValues } from "lit";
+import { HomeAssistant, LovelaceCard, LovelaceCardEditor } from "../../ha";
+import "../../shared/shape-icon";
+import "../../shared/state-info";
+import "../../shared/state-item";
+import { MushroomBaseElement } from "../../utils/base-element";
+import { TitleCardConfig } from "./title-card-config";
+declare const TEMPLATE_KEYS: readonly ["title", "subtitle"];
+type TemplateKey = (typeof TEMPLATE_KEYS)[number];
+export declare class TitleCard extends MushroomBaseElement implements LovelaceCard {
+    static getConfigElement(): Promise<LovelaceCardEditor>;
+    static getStubConfig(_hass: HomeAssistant): Promise<TitleCardConfig>;
+    private _config?;
+    private _templateResults?;
+    private _unsubRenderTemplates;
+    getCardSize(): number | Promise<number>;
+    setConfig(config: TitleCardConfig): void;
+    connectedCallback(): void;
+    disconnectedCallback(): void;
+    private _computeCacheKey;
+    protected willUpdate(_changedProperties: PropertyValues): void;
+    isTemplate(key: TemplateKey): boolean;
+    private getValue;
+    private _handleTitleAction;
+    private _handleSubtitleAction;
+    protected render(): import("lit-html").TemplateResult<1> | typeof nothing;
+    private renderArrow;
+    protected updated(changedProps: PropertyValues): void;
+    private _tryConnect;
+    private _tryConnectKey;
+    private _tryDisconnect;
+    private _tryDisconnectKey;
+    static get styles(): CSSResultGroup;
+}
+export {};

@@ -1,0 +1,32 @@
+import { CSSResultGroup, LitElement, nothing, PropertyValues, TemplateResult } from "lit";
+import { HomeAssistant } from "../../../ha";
+import { LovelaceChip, TemplateChipConfig } from "../../../utils/lovelace/chip/types";
+import { LovelaceChipEditor } from "../../../utils/lovelace/types";
+declare const TEMPLATE_KEYS: readonly ["content", "icon", "icon_color", "picture"];
+type TemplateKey = (typeof TEMPLATE_KEYS)[number];
+export declare class TemplateChip extends LitElement implements LovelaceChip {
+    static getConfigElement(): Promise<LovelaceChipEditor>;
+    static getStubConfig(_hass: HomeAssistant): Promise<TemplateChipConfig>;
+    hass?: HomeAssistant;
+    private _config?;
+    private _templateResults?;
+    private _unsubRenderTemplates;
+    setConfig(config: TemplateChipConfig): void;
+    connectedCallback(): void;
+    disconnectedCallback(): void;
+    private _computeCacheKey;
+    protected willUpdate(_changedProperties: PropertyValues): void;
+    private _handleAction;
+    isTemplate(key: TemplateKey): boolean;
+    private getValue;
+    protected render(): TemplateResult<1> | typeof nothing;
+    protected renderIcon(icon: string, iconColor?: string): TemplateResult;
+    protected renderContent(content: string): TemplateResult;
+    protected updated(changedProps: PropertyValues): void;
+    private _tryConnect;
+    private _tryConnectKey;
+    private _tryDisconnect;
+    private _tryDisconnectKey;
+    static get styles(): CSSResultGroup;
+}
+export {};

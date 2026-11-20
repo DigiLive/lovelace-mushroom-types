@@ -1,0 +1,31 @@
+import { CSSResultGroup, nothing, PropertyValues, TemplateResult } from "lit";
+import { ClimateEntity, HomeAssistant, LovelaceCard, LovelaceCardEditor } from "../../ha";
+import "../../shared/badge-icon";
+import "../../shared/card";
+import "../../shared/shape-avatar";
+import "../../shared/shape-icon";
+import "../../shared/state-info";
+import "../../shared/state-item";
+import { MushroomBaseCard } from "../../utils/base-card";
+import { ClimateCardConfig } from "./climate-card-config";
+import "./controls/climate-hvac-modes-control";
+import "./controls/climate-temperature-control";
+export declare class ClimateCard extends MushroomBaseCard<ClimateCardConfig, ClimateEntity> implements LovelaceCard {
+    static getConfigElement(): Promise<LovelaceCardEditor>;
+    static getStubConfig(hass: HomeAssistant): Promise<ClimateCardConfig>;
+    private _activeControl?;
+    private get _controls();
+    protected get hasControls(): boolean;
+    _onControlTap(ctrl: any, e: any): void;
+    setConfig(config: ClimateCardConfig): void;
+    protected updated(changedProperties: PropertyValues): void;
+    updateActiveControl(): void;
+    private _handleAction;
+    protected render(): TemplateResult | typeof nothing;
+    protected renderIcon(stateObj: ClimateEntity, icon?: string): TemplateResult;
+    protected renderBadge(entity: ClimateEntity): TemplateResult<1> | typeof nothing;
+    renderActionBadge(entity: ClimateEntity): TemplateResult<1> | typeof nothing;
+    private renderOtherControls;
+    private renderActiveControl;
+    static get styles(): CSSResultGroup;
+}

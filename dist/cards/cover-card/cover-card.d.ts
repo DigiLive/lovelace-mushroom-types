@@ -1,0 +1,38 @@
+import { CSSResultGroup, nothing, PropertyValues, TemplateResult } from "lit";
+import { CoverEntity, HomeAssistant, LovelaceCard, LovelaceCardEditor } from "../../ha";
+import "../../shared/badge-icon";
+import "../../shared/button";
+import "../../shared/card";
+import "../../shared/shape-avatar";
+import "../../shared/shape-icon";
+import "../../shared/state-info";
+import "../../shared/state-item";
+import { MushroomBaseCard } from "../../utils/base-card";
+import "./controls/cover-buttons-control";
+import "./controls/cover-position-control";
+import "./controls/cover-tilt-position-control";
+import { CoverCardConfig } from "./cover-card-config";
+type CoverCardControl = "buttons_control" | "position_control" | "tilt_position_control";
+export declare class CoverCard extends MushroomBaseCard<CoverCardConfig, CoverEntity> implements LovelaceCard {
+    static getConfigElement(): Promise<LovelaceCardEditor>;
+    static getStubConfig(hass: HomeAssistant): Promise<CoverCardConfig>;
+    protected get hasControls(): boolean;
+    private _activeControl?;
+    get _nextControl(): CoverCardControl | undefined;
+    private _onNextControlTap;
+    getCardSize(): number | Promise<number>;
+    setConfig(config: CoverCardConfig): void;
+    private get _controls();
+    updateActiveControl(): void;
+    protected updated(changedProperties: PropertyValues): void;
+    private position?;
+    updatePosition(): void;
+    private onCurrentPositionChange;
+    private _handleAction;
+    protected render(): TemplateResult | typeof nothing;
+    protected renderIcon(stateObj: CoverEntity, icon?: string): TemplateResult;
+    private renderNextControlButton;
+    private renderActiveControl;
+    static get styles(): CSSResultGroup;
+}
+export {};
