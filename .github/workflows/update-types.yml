@@ -107,18 +107,26 @@ jobs:
           }
           EOF
 
-      - name: 8. Compile TypeScript Types into dist Folder
+      - name: 8a. Compile TypeScript Types into dist Folder
         if: steps.check-release.outputs.new_release == 'true'
         working-directory: ./temp-mushroom
         run: npx tsc -p tsconfig.extract.json || true
+
+      - name: 8b. Patch Extracted TypeScript Declarations
+        if: steps.check-release.outputs.new_release == 'true'
+        run: npm run patch:types
 
       - name: 9. Clean Up Temporary Mushroom Source Files
         if: steps.check-release.outputs.new_release == 'true'
         run: rm -rf temp-mushroom
 
-      - name: 10. Generate Index Declaration File (generate-index-dts.js)
+      - name: 10. Generate Index Declaration File
         if: steps.check-release.outputs.new_release == 'true'
-        run: node generate-index-dts.js
+        run: npm run generate:index-dts
+
+      - name: 10b. Typecheck Declarations
+        if: steps.check-release.outputs.new_release == 'true'
+        run: npm run typecheck
 
       - name: 11. Check If Files Have Changed
         id: checkDiff

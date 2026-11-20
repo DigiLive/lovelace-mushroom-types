@@ -3,9 +3,9 @@ import { AppearanceSharedConfig } from "../../shared/config/appearance-config";
 import { EntitySharedConfig } from "../../shared/config/entity-config";
 import { LovelaceCardConfig } from "../../ha";
 export type CoverCardConfig = LovelaceCardConfig & EntitySharedConfig & AppearanceSharedConfig & ActionsSharedConfig & {
-    show_buttons_control?: false;
-    show_position_control?: false;
-    show_tilt_position_control?: false;
+    show_buttons_control?: boolean;
+    show_position_control?: boolean;
+    show_tilt_position_control?: boolean;
 };
 export declare const coverCardConfigStruct: import("superstruct").Struct<{
     entity: string;

@@ -1,0 +1,27 @@
+[
+  {
+    "name": "ClimateCardConfig.show_temperature_control",
+    "search": "show_temperature_control?: false;",
+    "replace": "show_temperature_control?: boolean;"
+  },
+  {
+    "name": "CoverCardConfig.show_buttons_control",
+    "search": "show_buttons_control?: false;",
+    "replace": "show_buttons_control?: boolean;"
+  },
+  {
+    "name": "CoverCardConfig.show_position_control",
+    "search": "show_position_control?: false;",
+    "replace": "show_position_control?: boolean;"
+  },
+  {
+    "name": "CoverCardConfig.show_tilt_position_control",
+    "search": "show_tilt_position_control?: false;",
+    "replace": "show_tilt_position_control?: boolean;"
+  },
+  {
+    "name": "StringSelector.text.multiple",
+    "search": "multiple?: true;",
+    "replace": "multiple?: boolean;"
+  }
+]

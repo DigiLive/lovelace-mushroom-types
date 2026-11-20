@@ -1,8 +1,5 @@
 {
   "compilerOptions": {
-    // Specifies the base directory for resolving module names.
-    // Useful when using "paths".
-    "baseUrl": ".",
     // A series of entries which re-map imports to lookup locations relative to the 'baseUrl'.
     // This allows your IDE (like VS Code) and TypeScript itself to understand
     // how paths like "lovelace-mushroom-types/..." resolve to files
@@ -19,7 +16,7 @@
     "skipLibCheck": true,
     // Recommended for types packages to avoid checking lib files
     "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     // Common for modern Node.js projects
     "target": "ESNext",
     // Can be adjusted, but won't emit JS anyway

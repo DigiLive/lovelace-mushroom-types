@@ -304,7 +304,7 @@ export interface StringSelector {
         prefix?: string;
         suffix?: string;
         autocomplete?: string;
-        multiple?: true;
+        multiple?: boolean;
     } | null;
 }
 export interface STTSelector {

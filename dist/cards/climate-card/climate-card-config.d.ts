@@ -4,7 +4,7 @@ import { AppearanceSharedConfig } from "../../shared/config/appearance-config";
 import { EntitySharedConfig } from "../../shared/config/entity-config";
 export declare const HVAC_MODES: HvacMode[];
 export type ClimateCardConfig = LovelaceCardConfig & EntitySharedConfig & AppearanceSharedConfig & ActionsSharedConfig & {
-    show_temperature_control?: false;
+    show_temperature_control?: boolean;
     hvac_modes?: HvacMode[];
     collapsible_controls?: boolean;
 };
