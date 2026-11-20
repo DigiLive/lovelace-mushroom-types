@@ -1,0 +1,36 @@
+{
+  "name": "@digilive/lovelace-mushroom-types",
+  "version": "0",
+  "description": "TypeScript type declarations derived from the Lovelace Mushroom project",
+  "keywords": [
+    "home-assistant",
+    "lovelace",
+    "mushroom",
+    "typescript",
+    "type-definitions"
+  ],
+  "homepage": "https://github.com/DigiLive/lovelace-mushroom-types",
+  "author": "Ferry Cools",
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/DigiLive"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DigiLive/lovelace-mushroom-types"
+  },
+  "license": "Apache-2.0",
+  "main": "",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/**/*.d.ts"
+  ],
+  "scripts": {
+    "generate:index-dts": "node generate-index-dts.js",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run generate:index-dts && npm run typecheck && echo 'Remember to update types from lovelace-mushroom before publishing!'"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.3"
+  }
+}

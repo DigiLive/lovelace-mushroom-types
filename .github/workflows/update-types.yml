@@ -1,0 +1,142 @@
+name: Update Mushroom Types
+
+on:
+  schedule:
+    - cron: '0 4 * * 1' # Runs on Monday at 4:00 AM UTC
+  workflow_dispatch:   # Allows manual trigger from the GitHub Actions tab
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      CI_COMMIT_MESSAGE: |
+        Continuous Integration - Update Mushroom Types from Upstream Release
+
+        [skip codacy]
+      CI_COMMIT_AUTHOR: Continuous Integration
+
+    strategy:
+      matrix:
+        node-version: [22.x]
+
+    steps:
+      - name: 1. Checkout My Repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 2. Check Upstream Release vs Local package.json
+        id: check-release
+        run: |
+          set -e
+
+          RAW_TAG=$(curl -fsS \
+            -H "Authorization: Bearer ${{ github.token }}" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/piitaya/lovelace-mushroom/releases/latest \
+            | jq -r .tag_name)
+          LATEST_TAG="${RAW_TAG}"
+          echo "Latest upstream release tag: $RAW_TAG"
+
+          echo "raw_tag=$RAW_TAG" >> $GITHUB_OUTPUT
+          echo "latest_tag=$LATEST_TAG" >> $GITHUB_OUTPUT
+
+          SAVED_TAG=$(node -p "require('./package.json').version")
+          echo "Current local package.json version: $SAVED_TAG"
+
+          if [ "$LATEST_TAG" = "$SAVED_TAG" ] && [ "${{ github.event_name }}" != "workflow_dispatch" ]; then
+            echo "No new release found. Skipping update."
+            echo "new_release=false" >> $GITHUB_OUTPUT
+          else
+            echo "New release detected or manually triggered!"
+            echo "new_release=true" >> $GITHUB_OUTPUT
+
+            node -e "
+              const fs = require('fs');
+              const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+              pkg.version = '$LATEST_TAG';
+              fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
+            "
+          fi
+
+      - name: 3. Setup Node.js (Version 22)
+        if: steps.check-release.outputs.new_release == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: 4. Install Root Dependencies & Update package-lock.json
+        if: steps.check-release.outputs.new_release == 'true'
+        run: npm install
+
+      - name: 5. Clone Exact Lovelace Mushroom Release Temporarily
+        if: steps.check-release.outputs.new_release == 'true'
+        run: |
+          TARGET_TAG="${{ steps.check-release.outputs.raw_tag }}"
+          echo "Cloning tag: $TARGET_TAG"
+          git clone --depth 1 --branch "$TARGET_TAG" https://github.com/piitaya/lovelace-mushroom.git temp-mushroom
+
+      - name: 6. Install Temporary Mushroom Dependencies via npm
+        if: steps.check-release.outputs.new_release == 'true'
+        working-directory: ./temp-mushroom
+        run: npm install
+
+      - name: 7. Create Lenient TypeScript Extraction Config
+        if: steps.check-release.outputs.new_release == 'true'
+        run: |
+          cat << 'EOF' > temp-mushroom/tsconfig.extract.json
+          {
+            "compilerOptions": {
+              "target": "ESNext",
+              "module": "ESNext",
+              "moduleResolution": "bundler",
+              "declaration": true,
+              "emitDeclarationOnly": true,
+              "rootDir": "./src",
+              "outDir": "../dist",
+              "strict": false,
+              "noEmitOnError": false,
+              "skipLibCheck": true,
+              "experimentalDecorators": true
+            },
+            "include": [
+              "src/**/*.ts"
+            ]
+          }
+          EOF
+
+      - name: 8. Compile TypeScript Types into dist Folder
+        if: steps.check-release.outputs.new_release == 'true'
+        working-directory: ./temp-mushroom
+        run: npx tsc -p tsconfig.extract.json || true
+
+      - name: 9. Clean Up Temporary Mushroom Source Files
+        if: steps.check-release.outputs.new_release == 'true'
+        run: rm -rf temp-mushroom
+
+      - name: 10. Generate Index Declaration File (generate-index-dts.js)
+        if: steps.check-release.outputs.new_release == 'true'
+        run: node generate-index-dts.js
+
+      - name: 11. Check If Files Have Changed
+        id: checkDiff
+        if: steps.check-release.outputs.new_release == 'true'
+        run: |
+          git diff --quiet . || echo "changed=true" >> $GITHUB_OUTPUT
+
+      - name: 12. Commit and Push Only dist, package.json and package-lock.json
+        if: steps.check-release.outputs.new_release == 'true' && steps.checkDiff.outputs.changed == 'true'
+        run: |
+          git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
+          git config --global user.email "ci_activity@noreply.github.com"
+
+          git add dist package.json package-lock.json
+          git commit -m "${{ env.CI_COMMIT_MESSAGE }}"
+          git push
+
+          VERSION=$(node -p "require('./package.json').version")
+
+          git tag "$VERSION"
+          git push origin "$VERSION"
