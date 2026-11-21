@@ -1,6 +1,6 @@
 {
   "name": "@digilive/lovelace-mushroom-types",
-  "version": "v5.3.0",
+  "version": "5.3.0",
   "description": "TypeScript type declarations derived from the Lovelace Mushroom project",
   "keywords": [
     "home-assistant",
@@ -26,7 +26,7 @@
     "dist/**/*.d.ts"
   ],
   "scripts": {
-    "generate:index-dts": "node scripts/generate-index-dts.js",
+    "generate:index-dts": "node scripts/generate-index-dts.js ./dist",
     "patch:types": "node scripts/patch-types.js",
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "npm run generate:index-dts && npm run patch:types && npm run typecheck"
