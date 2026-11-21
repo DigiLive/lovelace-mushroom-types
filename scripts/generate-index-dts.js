@@ -1,8 +1,13 @@
 const fs = require('fs');
 const path = require('path'); // Standard path module
-// const path = require('node:path/posix'); // Node.js v16+ specific way for clarity
 
-const typesDir = path.join(__dirname, 'dist');
+const targetDirArg = process.argv[2];
+if (!targetDirArg) {
+  console.error('Error: please provide a target directory argument (e.g. node scripts/generate-index-dts.js ./dist).');
+  process.exit(1);
+}
+
+const typesDir = path.resolve(process.cwd(), targetDirArg);
 const outputFile = path.join(typesDir, 'index.d.ts');
 const reExports = [];
 
